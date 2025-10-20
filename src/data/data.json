@@ -1,0 +1,13 @@
+{
+  "defaultCurrency": "USD",
+  "balances": {
+    "USD": 100,
+    "EUR": 500,
+    "XAF": 10000
+  },
+  "supportedCurrencies": [
+    { "code": "USD", "name": "US Dollar", "flag": "🇺🇸" },
+    { "code": "EUR", "name": "Euro", "flag": "🇪🇺" },
+    { "code": "XAF", "name": "CFA Franc", "flag": "🇨🇲" }
+  ]
+}
