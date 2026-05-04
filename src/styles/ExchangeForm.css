@@ -1,101 +1,13 @@
-/* .exchange-form {
-  margin: 20px auto;
-  max-width: 500px;
-  padding: 20px;
-  background: #f1f4f8;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.action-form--exchange .action-button {
+  background: linear-gradient(135deg, #1d4ed8, #0f766e);
 }
 
-.exchange-form h2 {
-  font-size: 1.4rem;
-  margin-bottom: 16px;
-  color: #0077cc;
-  text-align: center;
+.action-form--exchange select {
+  min-width: 0;
 }
 
-.exchange-form .form-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.exchange-form select,
-.exchange-form input {
-  flex: 1;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.exchange-form button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.exchange-form button:hover {
-  background-color: #005fa3;
-}.exchange-form button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.exchange-form button:hover {
-  background-color: #005fa3;
-}
-
-@media screen and (max-width: 600px) {
-  .exchange-form .form-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-} */
-
-
-
-.exchange-form button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.exchange-form button:hover {
-  background-color: #005fa3;
-}.exchange-form button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.exchange-form button:hover {
-  background-color: #005fa3;
+.action-form--exchange span {
+  color: #2563eb;
+  font-size: 1.15rem;
+  font-weight: 700;
 }

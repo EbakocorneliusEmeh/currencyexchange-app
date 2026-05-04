@@ -3,22 +3,19 @@ import { useWallet } from "../context/WalletContext";
 import "../styles/CurrencySelectorWithFlags.css"
 
 const CurrencySelectorWithFlags = () => {
-  const { defaultCurrency, setDefaultCurrency } = useWallet();
-
-  const options = [
-    { code: "USD", flag: "🇺🇸" },
-    { code: "EUR", flag: "🇪🇺" },
-    { code: "XAF", flag: "🇨🇲" }
-  ];
+  const { defaultCurrency, setDefaultCurrency, supportedCurrencies } = useWallet();
 
   return (
-    <div className="form-section">
-      <h2>Set Default Currency</h2>
+    <div className="currency-selector-card">
+      <div className="currency-selector-header">
+        <h2>Set Default Currency</h2>
+        <span>Changes the totals shown across the dashboard</span>
+      </div>
       <select
         value={defaultCurrency}
         onChange={(e) => setDefaultCurrency(e.target.value)}
       >
-        {options.map(({ code, flag }) => (
+        {supportedCurrencies.map(({ code, flag }) => (
           <option key={code} value={code}>
             {flag} {code}
           </option>

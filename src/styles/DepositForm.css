@@ -1,57 +1,7 @@
-
-
-.deposit-form {
-  margin: 20px auto;
-  max-width: 500px;
-  padding: 20px;
-  background: #eef6ff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.action-form--deposit .action-button {
+  background: linear-gradient(135deg, #16a34a, #0f766e);
 }
 
-.deposit-form h2 {
-  font-size: 1.4rem;
-  margin-bottom: 16px;
-  color: #0077cc;
-  text-align: center;
-}
-
-.deposit-form .form-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.deposit-form select,
-.deposit-form input {
-  flex: 1;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.deposit-form button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.deposit-form button:hover {
-  background-color: #218838;
-}
-
-@media screen and (max-width: 600px) {
-  .deposit-form .form-row {
-    flex-direction: column;
-    gap: 10px;
-  }
+.action-form--deposit .form-message {
+  color: #166534;
 }

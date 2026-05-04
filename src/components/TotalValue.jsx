@@ -5,7 +5,7 @@ const TotalValue = () => {
   const { getTotalInDefault, defaultCurrency } = useWallet();
 
   return (
-    <div className="total-value">
+    <div className="wallet-total-value">
       <h2>
         Total Value in {defaultCurrency}:{" "}
         {getTotalInDefault().toFixed(2)} {defaultCurrency}
