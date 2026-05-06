@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useWallet } from "../context/WalletContext";
 import AmountInput from "./AmountInput";
 import CurrencySelect from "./CurrencySelect";
+import { convertAmount, formatCurrencyAmount } from "../utils/exchangeRates";
 import "../styles/ExchangeForm.css";
 
 const ExchangeForm = () => {
@@ -10,6 +11,11 @@ const ExchangeForm = () => {
   const [to, setTo] = useState("EUR");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
+  const previewAmount = Number.parseFloat(amount);
+  const previewConverted =
+    Number.isFinite(previewAmount) && previewAmount > 0 && from !== to
+      ? convertAmount(previewAmount, from, to)
+      : 0;
 
   const handleExchange = () => {
     const parsed = parseFloat(amount);
@@ -30,7 +36,7 @@ const ExchangeForm = () => {
     <div className="action-form action-form--exchange">
       <div className="action-form__header">
         <h2>Exchange Currency</h2>
-        <span>Move funds between balances</span>
+        <span>Move value from one currency to another</span>
       </div>
 
       <div className="action-form__row">
@@ -50,6 +56,13 @@ const ExchangeForm = () => {
       </div>
 
       <AmountInput currency={from} amount={amount} onChange={setAmount} />
+
+      {Number.isFinite(previewAmount) && previewAmount > 0 && from !== to ? (
+        <p className="form-message">
+          {formatCurrencyAmount(previewAmount, from)} {from} will convert to{" "}
+          {formatCurrencyAmount(previewConverted, to)} {to}
+        </p>
+      ) : null}
 
       <button className="action-button" onClick={handleExchange}>
         Convert

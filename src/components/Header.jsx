@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWallet } from "../context/WalletContext";
 import { Link } from "react-router-dom";
+import { formatTotalAmount } from "../utils/exchangeRates";
 import "../styles/Header.css";
 
 const flagMap = {
@@ -28,7 +29,7 @@ const Header = () => {
           {flagMap[defaultCurrency]} {defaultCurrency}
         </div>
         <div className="total-value">
-          {totalInDefault.toFixed(2)} {defaultCurrency}
+          {formatTotalAmount(totalInDefault, defaultCurrency)} {defaultCurrency}
         </div>
 
         <nav className="nav-links">

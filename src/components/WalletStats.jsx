@@ -1,4 +1,5 @@
 import { useWallet } from "../context/WalletContext";
+import { formatTotalAmount } from "../utils/exchangeRates";
 
 const WalletStats = () => {
   const {
@@ -14,7 +15,7 @@ const WalletStats = () => {
       <article className="stat-card accent">
         <span className="stat-label">Total value</span>
         <strong>
-          {totalInDefault.toFixed(2)} {defaultCurrency}
+          {formatTotalAmount(totalInDefault, defaultCurrency)} {defaultCurrency}
         </strong>
       </article>
       <article className="stat-card">

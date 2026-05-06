@@ -1,4 +1,5 @@
 import { useWallet } from "../context/WalletContext";
+import { formatCurrencyAmount, formatTotalAmount } from "../utils/exchangeRates";
 
 const BalanceBreakdown = () => {
   const { balanceSummary, defaultCurrency } = useWallet();
@@ -15,11 +16,14 @@ const BalanceBreakdown = () => {
           <div key={currency} className="breakdown-row">
             <div className="breakdown-meta">
               <strong>{currency}</strong>
-              <span>{amount.toFixed(2)} available</span>
+              <span>
+                {formatCurrencyAmount(amount, currency)} available
+              </span>
             </div>
             <div className="breakdown-value">
               <span>
-                {convertedValue.toFixed(2)} {defaultCurrency}
+                {formatTotalAmount(convertedValue, defaultCurrency)}{" "}
+                {defaultCurrency}
               </span>
               <small>{share.toFixed(1)}%</small>
             </div>

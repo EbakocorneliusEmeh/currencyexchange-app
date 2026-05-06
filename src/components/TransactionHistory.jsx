@@ -1,5 +1,6 @@
 import React from "react";
 import { useWallet } from "../context/WalletContext";
+import { formatCurrencyAmount } from "../utils/exchangeRates";
 
 const TransactionHistory = () => {
   const { transactions } = useWallet();
@@ -22,7 +23,8 @@ const TransactionHistory = () => {
               <span>{new Date(transaction.createdAt).toLocaleDateString()}</span>
               <strong>
                 {transaction.direction === "out" ? "-" : "+"}
-                {transaction.amount.toFixed(2)} {transaction.currency}
+                {formatCurrencyAmount(transaction.amount, transaction.currency)}{" "}
+                {transaction.currency}
               </strong>
             </div>
           </article>

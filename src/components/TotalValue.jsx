@@ -1,4 +1,5 @@
 import { useWallet } from "../context/WalletContext";
+import { formatTotalAmount } from "../utils/exchangeRates";
 
 const TotalValue = () => {
   const { totalInDefault, defaultCurrency } = useWallet();
@@ -6,8 +7,8 @@ const TotalValue = () => {
   return (
     <div className="wallet-total-value">
       <h2>
-        Total Value in {defaultCurrency}:{" "}
-        {totalInDefault.toFixed(2)} {defaultCurrency}
+        Totalised value in {defaultCurrency}:{" "}
+        {formatTotalAmount(totalInDefault, defaultCurrency)} {defaultCurrency}
       </h2>
     </div>
   );
