@@ -1,4 +1,3 @@
-import React from "react";
 import { useWallet } from "../context/WalletContext";
 import CurrencyCard from "../components/CurrencyCard";
 import CurrencySelectorWithFlags from "../components/CurrencySelectorWithflags";
@@ -12,7 +11,7 @@ import TransactionHistory from "../components/TransactionHistory";
 import "../styles/WalletApp.css";
 
 const WalletPage = () => {
-  const { balances } = useWallet();
+  const { balances, currencyCount } = useWallet();
 
   return (
     <main className="wallet-app">
@@ -31,7 +30,7 @@ const WalletPage = () => {
       <section className="panel">
         <div className="panel-heading">
           <h2>Currency Cards</h2>
-          <span>{Object.keys(balances).length} balances tracked</span>
+          <span>{currencyCount} balances tracked</span>
         </div>
         <div className="currency-cards">
           {Object.entries(balances).map(([currency, amount]) => (

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useWallet } from "../context/WalletContext";
+import AmountInput from "./AmountInput";
+import CurrencySelect from "./CurrencySelect";
 import "../styles/WithdrawForm.css";
 
 const WithdrawForm = () => {
@@ -30,25 +32,13 @@ const WithdrawForm = () => {
         <span>Remove money from a balance</span>
       </div>
       <div className="action-form__row">
-        <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-          {supportedCurrencies.map(({ code }) => (
-            <option key={code} value={code}>
-              {code}
-            </option>
-          ))}
-        </select>
-        <div className="amount-input-shell">
-          <span className="amount-chip" aria-hidden="true">
-            {currency}
-          </span>
-          <input
-            type="number"
-            inputMode="decimal"
-            placeholder="Enter amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-        </div>
+        <CurrencySelect
+          className="withdraw-select"
+          currencies={supportedCurrencies}
+          value={currency}
+          onChange={setCurrency}
+        />
+        <AmountInput currency={currency} amount={amount} onChange={setAmount} />
         <button className="action-button" onClick={handleWithdraw}>
           Withdraw
         </button>

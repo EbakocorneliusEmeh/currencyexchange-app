@@ -1,49 +1,59 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import data from "../data/data.json";
 
 const WalletContext = createContext();
 // eslint-disable-next-line react-refresh/only-export-components
 export const useWallet = () => useContext(WalletContext);
 
+const exchangeRates = {
+  USD: { USD: 1, EUR: 1 / 1.24, XAF: 610 },
+  EUR: { EUR: 1, USD: 1.24, XAF: 655 },
+  XAF: { XAF: 1, USD: 1 / 610, EUR: 1 / 655 }
+};
+
+const createTransaction = ({
+  type,
+  currency,
+  amount,
+  direction,
+  note,
+  fromCurrency,
+  toCurrency,
+  convertedAmount
+}) => ({
+  id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+  type,
+  currency,
+  amount,
+  direction,
+  note,
+  fromCurrency,
+  toCurrency,
+  convertedAmount,
+  createdAt: new Date().toISOString()
+});
+
 export const WalletProvider = ({ children }) => {
   const [balances, setBalances] = useState({});
   const [defaultCurrency, setDefaultCurrency] = useState("USD");
   const [transactions, setTransactions] = useState([]);
-  const supportedCurrencies =
-    data.supportedCurrencies ??
-    Object.keys(data.balances ?? {}).map((code) => ({
-      code,
-      name: code,
-      flag: ""
-    }));
-
-  const exchangeRates = {
-    USD: { USD: 1, EUR: 1 / 1.24, XAF: 610 },
-    EUR: { EUR: 1, USD: 1.24, XAF: 655 },
-    XAF: { XAF: 1, USD: 1 / 610, EUR: 1 / 655 }
-  };
-
-  const createTransaction = ({
-    type,
-    currency,
-    amount,
-    direction,
-    note,
-    fromCurrency,
-    toCurrency,
-    convertedAmount
-  }) => ({
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-    type,
-    currency,
-    amount,
-    direction,
-    note,
-    fromCurrency,
-    toCurrency,
-    convertedAmount,
-    createdAt: new Date().toISOString()
-  });
+  const supportedCurrencies = useMemo(
+    () =>
+      data.supportedCurrencies ??
+      Object.keys(data.balances ?? {}).map((code) => ({
+        code,
+        name: code,
+        flag: ""
+      })),
+    []
+  );
 
   useEffect(() => {
     const stored = localStorage.getItem("walletData");
@@ -68,22 +78,65 @@ export const WalletProvider = ({ children }) => {
     }
   }, [balances, defaultCurrency, transactions]);
 
-  const exchangeCurrency = (from, to, amount) => {
-    if (!exchangeRates[from] || !exchangeRates[from][to] || amount <= 0 || from === to) {
-      return false;
-    }
+  const totalInDefault = useMemo(
+    () =>
+      Object.entries(balances).reduce((total, [currency, amount]) => {
+        const rate = exchangeRates[currency]?.[defaultCurrency] || 1;
+        return total + amount * rate;
+      }, 0),
+    [balances, defaultCurrency]
+  );
 
-    if ((balances[from] ?? 0) < amount) {
+  const balanceSummary = useMemo(
+    () =>
+      Object.entries(balances)
+        .map(([currency, amount]) => {
+          const rate = exchangeRates[currency]?.[defaultCurrency] || 1;
+          const convertedValue = amount * rate;
+
+          return {
+            currency,
+            amount,
+            convertedValue,
+            share: totalInDefault > 0 ? (convertedValue / totalInDefault) * 100 : 0
+          };
+        })
+        .sort((a, b) => b.convertedValue - a.convertedValue),
+    [balances, defaultCurrency, totalInDefault]
+  );
+
+  const latestTransaction = useMemo(() => transactions[0] ?? null, [transactions]);
+  const currencyCount = useMemo(
+    () => Object.values(balances).filter((value) => value > 0).length,
+    [balances]
+  );
+
+  const exchangeCurrency = useCallback((from, to, amount) => {
+    if (!exchangeRates[from] || !exchangeRates[from][to] || amount <= 0 || from === to) {
       return false;
     }
 
     const rate = exchangeRates[from][to];
     const converted = amount * rate;
-    setBalances((prev) => ({
-      ...prev,
-      [from]: prev[from] - amount,
-      [to]: (prev[to] ?? 0) + converted
-    }));
+    let success = false;
+
+    setBalances((prev) => {
+      if ((prev[from] ?? 0) < amount) {
+        return prev;
+      }
+
+      success = true;
+      return {
+        ...prev,
+        [from]: prev[from] - amount,
+        [to]: (prev[to] ?? 0) + converted
+      };
+    });
+
+    if (!success) {
+      return false;
+    }
+
     setTransactions((prev) => [
       createTransaction({
         type: "exchange",
@@ -98,9 +151,9 @@ export const WalletProvider = ({ children }) => {
       ...prev
     ]);
     return true;
-  };
+  }, []);
 
-  const deposit = (currency, amount) => {
+  const deposit = useCallback((currency, amount) => {
     if (amount <= 0) {
       return false;
     }
@@ -120,17 +173,31 @@ export const WalletProvider = ({ children }) => {
       ...prev
     ]);
     return true;
-  };
+  }, []);
 
-  const withdraw = (currency, amount) => {
-    if (amount <= 0 || (balances[currency] ?? 0) < amount) {
+  const withdraw = useCallback((currency, amount) => {
+    if (amount <= 0) {
       return false;
     }
 
-    setBalances((prev) => ({
-      ...prev,
-      [currency]: prev[currency] - amount
-    }));
+    let success = false;
+
+    setBalances((prev) => {
+      if ((prev[currency] ?? 0) < amount) {
+        return prev;
+      }
+
+      success = true;
+      return {
+        ...prev,
+        [currency]: prev[currency] - amount
+      };
+    });
+
+    if (!success) {
+      return false;
+    }
+
     setTransactions((prev) => [
       createTransaction({
         type: "withdraw",
@@ -142,34 +209,7 @@ export const WalletProvider = ({ children }) => {
       ...prev
     ]);
     return true;
-  };
-
-  const getTotalInDefault = () => {
-    return Object.entries(balances).reduce((total, [currency, amount]) => {
-      const rate = exchangeRates[currency]?.[defaultCurrency] || 1;
-      return total + amount * rate;
-    }, 0);
-  };
-
-  const getBalanceSummary = () => {
-    const total = getTotalInDefault();
-
-    return Object.entries(balances)
-      .map(([currency, amount]) => {
-        const rate = exchangeRates[currency]?.[defaultCurrency] || 1;
-        const convertedValue = amount * rate;
-
-        return {
-          currency,
-          amount,
-          convertedValue,
-          share: total > 0 ? (convertedValue / total) * 100 : 0
-        };
-      })
-      .sort((a, b) => b.convertedValue - a.convertedValue);
-  };
-
-  const getLatestTransaction = () => transactions[0] ?? null;
+  }, []);
 
   return (
     <WalletContext.Provider
@@ -181,10 +221,12 @@ export const WalletProvider = ({ children }) => {
         exchangeCurrency,
         deposit,
         withdraw,
-        getTotalInDefault,
-        getBalanceSummary,
+        totalInDefault,
+        balanceSummary,
         transactions,
-        getLatestTransaction
+        latestTransaction,
+        currencyCount,
+        transactionCount: transactions.length
       }}
     >
       {children}

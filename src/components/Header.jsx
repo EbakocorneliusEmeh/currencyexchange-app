@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useWallet } from "../context/WalletContext";
 import { Link } from "react-router-dom";
 import "../styles/Header.css";
@@ -10,7 +10,7 @@ const flagMap = {
 };
 
 const Header = () => {
-  const { defaultCurrency, getTotalInDefault } = useWallet();
+  const { defaultCurrency, totalInDefault } = useWallet();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -28,7 +28,7 @@ const Header = () => {
           {flagMap[defaultCurrency]} {defaultCurrency}
         </div>
         <div className="total-value">
-          {getTotalInDefault().toFixed(2)} {defaultCurrency}
+          {totalInDefault.toFixed(2)} {defaultCurrency}
         </div>
 
         <nav className="nav-links">

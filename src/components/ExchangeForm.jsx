@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useWallet } from "../context/WalletContext";
-import "../styles/ExchangeForm.css"
+import AmountInput from "./AmountInput";
+import CurrencySelect from "./CurrencySelect";
+import "../styles/ExchangeForm.css";
 
 const ExchangeForm = () => {
   const { exchangeCurrency, supportedCurrencies } = useWallet();
@@ -32,37 +34,26 @@ const ExchangeForm = () => {
       </div>
 
       <div className="action-form__row">
-        <select value={from} onChange={(e) => setFrom(e.target.value)}>
-          {supportedCurrencies.map(({ code }) => (
-            <option key={code} value={code}>
-              {code}
-            </option>
-          ))}
-        </select>
+        <CurrencySelect
+          className="exchange-select"
+          currencies={supportedCurrencies}
+          value={from}
+          onChange={setFrom}
+        />
         <span>→</span>
-        <select value={to} onChange={(e) => setTo(e.target.value)}>
-          {supportedCurrencies.map(({ code }) => (
-            <option key={code} value={code}>
-              {code}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="amount-input-shell">
-        <span className="amount-chip" aria-hidden="true">
-          {from}
-        </span>
-        <input
-          type="number"
-          inputMode="decimal"
-          placeholder="Enter amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+        <CurrencySelect
+          className="exchange-select"
+          currencies={supportedCurrencies}
+          value={to}
+          onChange={setTo}
         />
       </div>
 
-      <button className="action-button" onClick={handleExchange}>Convert</button>
+      <AmountInput currency={from} amount={amount} onChange={setAmount} />
+
+      <button className="action-button" onClick={handleExchange}>
+        Convert
+      </button>
       {message ? <p className="form-message">{message}</p> : null}
     </div>
   );

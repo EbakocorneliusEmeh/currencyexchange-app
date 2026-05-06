@@ -1,14 +1,13 @@
-import React from "react";
 import { useWallet } from "../context/WalletContext";
 
 const TotalValue = () => {
-  const { getTotalInDefault, defaultCurrency } = useWallet();
+  const { totalInDefault, defaultCurrency } = useWallet();
 
   return (
     <div className="wallet-total-value">
       <h2>
         Total Value in {defaultCurrency}:{" "}
-        {getTotalInDefault().toFixed(2)} {defaultCurrency}
+        {totalInDefault.toFixed(2)} {defaultCurrency}
       </h2>
     </div>
   );

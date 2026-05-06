@@ -1,9 +1,7 @@
-import React from "react";
 import { useWallet } from "../context/WalletContext";
 
 const BalanceBreakdown = () => {
-  const { getBalanceSummary, defaultCurrency } = useWallet();
-  const summary = getBalanceSummary();
+  const { balanceSummary, defaultCurrency } = useWallet();
 
   return (
     <section className="panel">
@@ -13,7 +11,7 @@ const BalanceBreakdown = () => {
       </div>
 
       <div className="breakdown-list">
-        {summary.map(({ currency, amount, convertedValue, share }) => (
+        {balanceSummary.map(({ currency, amount, convertedValue, share }) => (
           <div key={currency} className="breakdown-row">
             <div className="breakdown-meta">
               <strong>{currency}</strong>
@@ -31,7 +29,9 @@ const BalanceBreakdown = () => {
           </div>
         ))}
 
-        {summary.length === 0 ? <p className="empty-state">No balances yet.</p> : null}
+        {balanceSummary.length === 0 ? (
+          <p className="empty-state">No balances yet.</p>
+        ) : null}
       </div>
     </section>
   );
