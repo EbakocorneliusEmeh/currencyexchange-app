@@ -1,0 +1,7 @@
+.action-form--withdraw .action-button {
+  background: linear-gradient(135deg, #ea580c, #b45309);
+}
+
+.action-form--withdraw .form-message {
+  color: #9a3412;
+}

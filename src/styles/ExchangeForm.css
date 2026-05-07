@@ -1,0 +1,13 @@
+.action-form--exchange .action-button {
+  background: linear-gradient(135deg, #1d4ed8, #0f766e);
+}
+
+.action-form--exchange select {
+  min-width: 0;
+}
+
+.action-form--exchange span {
+  color: #2563eb;
+  font-size: 1.15rem;
+  font-weight: 700;
+}

@@ -1,12 +1,50 @@
-# React + Vite
+# Currency Exchange Wallet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Vite wallet app for managing balances across USD, EUR, and XAF. Users can deposit funds, exchange between currencies, choose a default currency, and view the total wallet value in that default currency.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Deposit funds into any supported currency
+- Exchange money between currencies
+- View per-currency balances
+- See the total wallet value in the user’s default currency
+- Change the default currency used for totals
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+## Available Scripts
+
+- `npm run dev` starts the Vite development server
+- `npm run build` creates a production build
+- `npm run lint` runs ESLint
+
+## Deploying
+
+- Deploy the app on Vercel using the `build` output generated in `dist`
+- Use `npm run build` as the build command
+- Use `dist` as the output directory
+
+## Project Notes
+
+- Currency conversion is centered on USD as the reference currency
+- Supported currencies are USD, EUR, and XAF
+- Wallet data is persisted locally in the browser
+
+## Submission Checklist
+
+- Share the Vercel deployment link after publishing
+- Share the pull request link after opening the PR on GitHub
+ 
+
+ ## how to clone https://github.com/EbakocorneliusEmeh/currencyexchange-app.git

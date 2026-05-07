@@ -1,0 +1,7 @@
+.action-form--deposit .action-button {
+  background: linear-gradient(135deg, #16a34a, #0f766e);
+}
+
+.action-form--deposit .form-message {
+  color: #166534;
+}
